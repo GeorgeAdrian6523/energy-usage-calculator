@@ -24,7 +24,7 @@
             padding: 50px;
             background: #303133;
             color: white;
-            width: auto;
+            width: 1250px;
             border-radius: 24px;
         }
 
@@ -46,10 +46,19 @@
         .result-box {
             background-color: #575757;
             padding: 15px;
-            font-size: 1.1rem;
+            font-size: 1rem;
             border-radius: 8px;
             color: white;
             height: auto;
+            display: flex;
+            align-items: center;
+            gap: 10px; 
+
+        }
+
+        .result-icon {
+            width: 45px;  
+            height: 45px;
         }
 
         .result-box strong {
@@ -63,11 +72,13 @@
             background-color: #303133;
             padding: 10px;
             border-radius: 12px;
+        
         }
 
         .flex-results {
             display: flex;
             gap: 10px;
+         
         }
 
         input[type="range"] {
@@ -109,7 +120,7 @@
             border: 1px solid white;
            
         }
-        @media only screen and (max-width: 800px) {
+        @media only screen and (max-width: 850px) {
             .calculator-container{
                 flex-direction: column;
             }
@@ -121,7 +132,7 @@
 
 <div class="calculator-container">
     <div id="slider-container">
-        <h2>Energy Usage Calculator</h2>
+        <h2>Energiberegner</h2>
         <div class="flex-labels">
             <label for="sliderMWh">Select energy usage (MWh):</label>
         </div>
@@ -130,20 +141,34 @@
             <label for="inputMWh">Or enter MWh manually:</label>
             <input type="number" id="inputMWh" min="0" max="10000" step="10" value="5000">
         </div>
-        <p class="info_text">* CO2e factor - 499 by default</p>
+        <p class="info_text">*CO2e faktor - 499 standard</p>
     </div>
 
-    <!-- Right side: Results in a box -->
-    <div class="results-container">
-        <div class="result-box" id="result2">
-        </div>
-        <div class="flex-results">
-            <div class="result-box" id="result3"></div>
-            <div class="result-box" id="result4"></div>
-        </div>
-        <div class="result-box" id="result5"></div>
-        <div class="result-box" id="result6"></div>
+   <div class="results-container">
+    <div class="result-box" id="result2">
+        <img src="icons/co2.svg" alt="CO2 icon" class="result-icon">
+        <div>
+            <span class="result-text"></span>
+            <p>Virksomhedens estimerede CO2-besparelse (Market-Based Approach, data fra Energinet.dk)</p>
     </div>
+    </div>
+
+    <div class="flex-results">
+        <div class="result-box" id="result3"></div>
+        <div class="result-box" id="result4"></div>
+    </div>
+
+    <div class="result-box" id="result5">
+        <img src="icons/solar.svg" alt="Solar panel icon" class="result-icon">
+        <span class="result-text"></span>
+    </div>
+    
+    <div class="result-box" id="result6">
+        <img src="icons/plane.svg" alt="Plane icon" class="result-icon">
+        <span class="result-text"></span>
+    </div>
+</div>
+
 </div>
 
 <script>
@@ -170,11 +195,11 @@
         const cphParisTrips = Math.floor(totalCO2eInKg / 190);
 
         // Update the results
-        document.getElementById('result2').innerHTML = `<strong>${co2eMarket}</strong> CO2e ton (market based)`;
+        document.getElementById('result2').querySelector('.result-text').innerHTML = `<strong>${co2eMarket}</strong> CO2e ton (market based)`;
         document.getElementById('result3').innerHTML = `<strong>${co2eDkVest}</strong> CO2e ton (DK-Vest location based)`;
         document.getElementById('result4').innerHTML = `<strong>${co2eDkØst}</strong> CO2e ton (DK-Øst location based)`;
-        document.getElementById('result5').innerHTML = `<strong>${solarPanels}</strong> Solceller`;
-        document.getElementById('result6').innerHTML = `<strong>${cphParisTrips}</strong> CPH til Paris (returrejser)`;
+        document.getElementById('result5').querySelector('.result-text').innerHTML = `<strong>${solarPanels}</strong>  Solceller`;
+        document.getElementById('result6').querySelector('.result-text').innerHTML = `<strong>${cphParisTrips}</strong> CPH til Paris (returrejser)`;
     }
 
     const slider = document.getElementById('sliderMWh');
