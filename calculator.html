@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Energy Usage Calculator with Slider & Input</title>
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Work Sans', sans-serif;
+            padding: 20px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            font-size: 1rem;
+        }
+
+        .calculator-container {
+            margin-left: auto;
+            margin-right: auto;
+            display: flex;
+            gap: 50px;
+            padding: 50px;
+            background: #303133;
+            color: white;
+            width: 1250px;
+            border-radius: 24px;
+        }
+
+        .flex-labels{
+            display: flex;
+            align-items: center;
+            justify-content: space-between
+        }
+
+        .info_text{
+            font-size: 12px;
+        }
+
+        #slider-container {
+            flex: 1;
+            max-width: 600px;
+        }
+
+        .result-box {
+            background-color: #575757;
+            padding: 15px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            color: white;
+            height: 80px;
+        }
+
+        .result-box strong {
+            font-size: 1.3rem;
+        }
+        .results-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            background-color: #303133;
+            padding: 10px;
+            border-radius: 12px;
+        }
+
+        .flex-results {
+            display: flex;
+            gap: 10px;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            background-color: #b638cf;
+            overflow:hidden;        
+        }
+
+        .accent {
+            accent-color: #b386cf;
+        }
+        
+
+        .flex-input{
+            display:flex;
+            flex-direction: column;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 5px;
+            margin-top: 5px;
+            font-size: 1rem;
+            background: #575757;
+            border: none;
+            color: white;
+            border-radius: 8px;
+            padding-left: 10px;
+            padding-right: 10px;
+            appearance: textfield;
+        }
+       
+        #inputMWh {
+            width: 300px;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border: 1px solid white;
+           
+        }
+        
+    </style>
+</head>
+<body>
+
+<div class="calculator-container">
+    <div id="slider-container">
+        <h2>Energy Usage Calculator</h2>
+        <div class="flex-labels">
+            <label for="sliderMWh">Select energy usage (MWh):</label>
+        </div>
+        <input type="range" id="sliderMWh" class="accent" fs-rangeslider-element="input" min="0" max="10000" step="10" value="5000" aria-valuenow="5000">
+        <div class="flex-input">
+            <label for="inputMWh">Or enter MWh manually:</label>
+            <input type="number" id="inputMWh" min="0" max="10000" step="10" value="5000">
+        </div>
+        <p class="info_text">* CO2e factor - 499 by default</p>
+    </div>
+
+    <!-- Right side: Results in a box -->
+    <div class="results-container">
+        <div class="result-box" id="result2">
+        </div>
+        <div class="flex-results">
+            <div class="result-box" id="result3"></div>
+            <div class="result-box" id="result4"></div>
+        </div>
+        <div class="result-box" id="result5"></div>
+        <div class="result-box" id="result6"></div>
+    </div>
+</div>
+
+<script>
+    const marketBasedFactor = 499;
+
+    function calculateValues(customerUsage) {
+        if (isNaN(customerUsage) || customerUsage <= 0) {
+            return;
+        }
+
+        // CO2 emissions calculations
+        const co2eMarket = Math.floor(customerUsage * marketBasedFactor / 1000);
+        const co2eDkVest = Math.floor(customerUsage * 139.11 / 1000);
+        const co2eDkØst = Math.floor(customerUsage * 59.06 / 1000);
+
+        // Solar panel calculation (in meters or KM)
+        const rawSolarPanels = customerUsage * 3.860248447;
+        const solarPanels = rawSolarPanels >= 1000 
+            ? (Math.floor(rawSolarPanels / 1000 * 10) / 10).toFixed(1) + ' KM'
+            : Math.floor(rawSolarPanels) + ' m';
+
+        // Trips from Copenhagen to Paris (190 kg CO2e per return trip)
+        const totalCO2eInKg = customerUsage * 432;
+        const cphParisTrips = Math.floor(totalCO2eInKg / 190);
+
+        // Update the results
+        document.getElementById('result2').innerHTML = `<strong>${co2eMarket}</strong> CO2e ton (market based)`;
+        document.getElementById('result3').innerHTML = `<strong>${co2eDkVest}</strong> CO2e ton (DK-Vest location based)`;
+        document.getElementById('result4').innerHTML = `<strong>${co2eDkØst}</strong> CO2e ton (DK-Øst location based)`;
+        document.getElementById('result5').innerHTML = `<strong>${solarPanels}</strong> Solceller`;
+        document.getElementById('result6').innerHTML = `<strong>${cphParisTrips}</strong> CPH til Paris (returrejser)`;
+    }
+
+    const slider = document.getElementById('sliderMWh');
+    const input = document.getElementById('inputMWh');
+
+    // When slider changes, update input and calculate
+    slider.addEventListener('input', () => {
+        input.value = slider.value;
+        calculateValues(parseInt(slider.value));
+    });
+
+    // When input changes, update slider and calculate
+    input.addEventListener('input', () => {
+        const value = parseInt(input.value) || 0;
+        slider.value = value;
+        calculateValues(value);
+    });
+
+    // Initial calculation on page load
+    calculateValues(parseInt(slider.value));
+</script>
+
+</body>
+</html>
