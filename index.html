@@ -51,9 +51,24 @@
             color: white;
             height: auto;
             display: flex;
-            align-items: center;
+            padding-top: 20px;
             gap: 10px; 
+            align-items: Center;
 
+        }
+
+        #result3 {
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+            width: 100%;
+        }
+
+        #result4 {
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+            width:100%;
         }
 
         .result-icon {
@@ -64,6 +79,12 @@
         .result-box strong {
             font-size: 1.3rem;
         }
+
+        .result-box p{
+            margin: 0;
+            margin-top: 8px;
+        }
+
         .results-container {
             flex: 1;
             display: flex;
@@ -154,18 +175,30 @@
     </div>
 
     <div class="flex-results">
-        <div class="result-box" id="result3"></div>
-        <div class="result-box" id="result4"></div>
+        <div class="result-box" id="result3">
+            <span class="result-text"></span>
+            <span>(DK-Vest lokationsbaseret)</span>
+        </div> 
+        <div class="result-box" id="result4">
+            <span class="result-text"></span>
+            <span>(DK-East lokationsbaseret)</span>
+        </div>
     </div>
 
     <div class="result-box" id="result5">
         <img src="https://georgeadrian6523.github.io/energy-usage-calculator/icons/solar.svg" alt="Solar panel icon" class="result-icon">
-        <span class="result-text"></span>
+        <div>
+            <span class="result-text"></span>
+            <p>Så mange kilometer solpaneler skal der til for at dække jeres forbrug.</p>
+        </div>
     </div>
     
     <div class="result-box" id="result6">
         <img src="https://georgeadrian6523.github.io/energy-usage-calculator/icons/plane.svg" alt="Plane icon" class="result-icon">
-        <span class="result-text"></span>
+        <div>
+            <span class="result-text"></span>
+            <p>Ved at undgå udledning af xx tons CO2e, sparer du, hvad der svarer til lige omkring 1248 returrejser fra København til Paris med fly.</p>
+        </div>
     </div>
 </div>
 
@@ -195,11 +228,11 @@
         const cphParisTrips = Math.floor(totalCO2eInKg / 190);
 
         // Update the results
-        document.getElementById('result2').querySelector('.result-text').innerHTML = `<strong>${co2eMarket}</strong> CO2e ton (market based)`;
-        document.getElementById('result3').innerHTML = `<strong>${co2eDkVest}</strong> CO2e ton (DK-Vest location based)`;
-        document.getElementById('result4').innerHTML = `<strong>${co2eDkØst}</strong> CO2e ton (DK-Øst location based)`;
-        document.getElementById('result5').querySelector('.result-text').innerHTML = `<strong>${solarPanels}</strong>  Solceller`;
-        document.getElementById('result6').querySelector('.result-text').innerHTML = `<strong>${cphParisTrips}</strong> CPH til Paris (returrejser)`;
+        document.getElementById('result2').querySelector('.result-text').innerHTML = `<strong>${co2eMarket} CO2e ton (market based)</strong>`;
+        document.getElementById('result3').querySelector('.result-text').innerHTML = `<strong>${co2eDkVest} CO2e ton</strong>`;
+        document.getElementById('result4').querySelector('.result-text').innerHTML = `<strong>${co2eDkØst} CO2e ton</strong>`;
+        document.getElementById('result5').querySelector('.result-text').innerHTML = `<strong>${solarPanels} Solceller</strong>`;
+        document.getElementById('result6').querySelector('.result-text').innerHTML = `<strong>${cphParisTrips} CPH til Paris </strong> (returrejser)`;
     }
 
     const slider = document.getElementById('sliderMWh');
