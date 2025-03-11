@@ -102,6 +102,10 @@
          
         }
 
+        .digit{
+            color: #d5abf0;
+        }
+
         input[type="range"] {
             width: 100%;
             background-color: #b638cf;
@@ -228,11 +232,11 @@
         const cphParisTrips = Math.floor(totalCO2eInKg / 190);
 
         // Update the results
-        document.getElementById('result2').querySelector('.result-text').innerHTML = `<strong>${co2eMarket} CO2e ton (market based)</strong>`;
-        document.getElementById('result3').querySelector('.result-text').innerHTML = `<strong>${co2eDkVest} CO2e ton</strong>`;
-        document.getElementById('result4').querySelector('.result-text').innerHTML = `<strong>${co2eDkØst} CO2e ton</strong>`;
-        document.getElementById('result5').querySelector('.result-text').innerHTML = `<strong>${solarPanels} Solceller</strong>`;
-        document.getElementById('result6').querySelector('.result-text').innerHTML = `<strong>${cphParisTrips} CPH til Paris </strong> (returrejser)`;
+        document.getElementById('result2').querySelector('.result-text').innerHTML = `<strong><span class="digit">${co2eMarket}</span></strong> CO2e ton (market based)`;
+        document.getElementById('result3').querySelector('.result-text').innerHTML = `<strong><span class="digit">${co2eDkVest}</span></strong> CO2e ton`;
+        document.getElementById('result4').querySelector('.result-text').innerHTML = `<strong><span class="digit">${co2eDkØst}</span></strong> CO2e ton`;
+        document.getElementById('result5').querySelector('.result-text').innerHTML = `<strong><span class="digit">${solarPanels}</span></strong> Solceller`;
+        document.getElementById('result6').querySelector('.result-text').innerHTML = `<strong><span class="digit">${cphParisTrips}</span></strong> CPH til Paris (returrejser)`;
     }
 
     const slider = document.getElementById('sliderMWh');
